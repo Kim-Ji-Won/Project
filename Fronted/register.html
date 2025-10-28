@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+</head>
+<body>
+  <h2>회원가입 페이지</h2>
+
+  <form id="registerForm">
+    <label>아이디: <input type="text" id="id" required></label><br>
+    <label>비밀번호: <input type="password" id="pw" required></label><br>
+    <button type="submit">회원가입</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault(); // 폼 새로고침 방지
+
+      const id = document.getElementById("id").value;
+      const pw = document.getElementById("pw").value;
+
+      // 서버로 POST 요청 보내기
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id, pw: pw })
+      });
+
+      const data = await res.json();
+      document.getElementById("result").textContent = data.message;
+
+      if (data.message.includes("완료")) {
+        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+        window.location.href = "/Shopping_Login/Fronted/login.html";
+      }
+    });    
+  </script>
+</body>
+</html>

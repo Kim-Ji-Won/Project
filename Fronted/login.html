@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      text-align: center;
+      padding-top: 80px;
+    }
+    input {
+      padding: 8px;
+      margin: 5px;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h2>로그인 페이지</h2>
+  <input type="text" id="id" placeholder="아이디"><br>
+  <input type="password" id="pw" placeholder="비밀번호"><br>
+  <button onclick="login()">로그인</button>
+
+  <script>
+    async function login() {
+      const id = document.getElementById("id").value;
+      const pw = document.getElementById("pw").value;
+
+      // 서버로 로그인 요청 보내기
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, pw })
+      });
+
+      const data = await response.json();
+      alert(data.message);
+
+      // 로그인 성공 시 메인페이지(home.html)로 이동
+      if (data.message.includes("성공")) {
+        window.location.href = "/Shopping_Main/main.html";
+      }
+    }
+  </script>
+</body>
+</html>
