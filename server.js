@@ -83,4 +83,3 @@ app.use(express.static(path.join(__dirname, "..")));//현재 서버 파일의 �
 app.listen(3000, () => {
   console.log("✅ 서버 실행 중: http://localhost:3000");
 });
-
