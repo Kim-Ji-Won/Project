@@ -1,3 +1,17 @@
+const mysql = require("mysql2");
+
+const conn = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "1234",   // 방금 네가 설정한 새 비번
+  database: "shoppingmall"
+});
+
+conn.connect((err)=>{
+  if(err) throw err;
+  console.log("MySQL 연결 성공");
+});
+
 const express = require("express");
 const session = require("express-session"); //세션을 관리하는 도구(로그인 상태를 쿠키에 저장하고 추적)
 const bodyParser = require("body-parser"); //프론트에서 보낸 데이터를 읽는 도구
@@ -16,55 +30,38 @@ app.use(
     })
 );
 
-//임시 회원 데이터 (DB 대신 사용할 배열)
-let users = [
-    {id: "jiwon", pw: "1234"}, 
-    {id: "test", pw: "1111"}
-]; //객체 배열
 
 //4. 회원가입 기능
-app.post("/register", function (req, res) { // /resgier로 열린 문을 통해 프론트에서 백엔드로 post해주면 그 때 function을 실행함
-    const id = req.body.id; //프론트에서 보낸 데이터(id, pw)가 req안에 담겨서 오므로 그걸 끄내서 id, pw 변수에 저장하겠다는 것
-                            //req 안에는 많은 정보가 담겨져 오고 우리가 필요한건 body 안에 담긴 데이터이므로 req.body.id / req.body.pw로 접근함
-    const pw = req.body.pw;
+app.post("/register", (req, res) => {
+    const {id, pw} = req.body;
 
-    //이미 존재하는 아이디인지 확인
-    const exist = users.find(function (user) { //Array(users).find()는 배열 안의 요소를 하나씩 꺼내서 조건에 맞는 첫 번째 요소를 찾아주는 함수
-    //여기서 핵심은 user는 우리가 직접 만든 게 아니라 find 함수가 자동으로 전달해주는 매개변수임. 즉 users 배열에 있는 요소들 하나씩 꺼내서 user에 담겠다는거임.
-    //위 find 함수의 작동은 find()는 users 배열을 처음부터 끝까지 검사한 후, user에 차례대로 넣어줌. 그리고 user.id === id가 처음으로 true 되는 순간 > 멈추고 그 값을 반환
-        return user.id === id;
+    conn.query("SELECT * FROM users WHERE id=?", [id], (err, rows) => {
+        if(err) throw err;
+
+        if(rows.length > 0) {
+            return res.json({message: "이미 존재하는 아이디입니다."});
+        }
+
+        conn.query("INSERT INTO users (id, pw) VALUES (?, ?)", [id, pw], (err2) => {
+            if(err2) throw err2;
+            res.json({message: "회원가입이 완료되었습니다."});
+        });
     });
-    // 이미 아이디 존재하면 에러 메시지 보내고 함수 종료
-    if (exist) {
-        res.json({ message: "이미 존재하는 아이디입니다." }); //프론트로 응답 보내기
-        return;
-    }
-
-    //새로운 사용자 추가(아이디 존재하지 않을 경우)
-    users.push({ id: id, pw: pw}); //만들어 놓은 users 배열에 새로운 객체 추가
-    res.json({message: "회원가입이 완료되었습니다."}); //프론트로 응답 보내기
-    //여기서 헷갈릴 수 있는점!!!!!! 지금 서버>프론트도 .json / 프론트>서버도 .json을 쓰는데 어떻게 문자열이 오갈까? 기본적으로 http 통신은 오직 "문자열"만 오고갈 수 있음.
-    //그래서 서로 오갈 때 무조건 문자열로 변환해서 보내줘야됨. 근데 server에서는 express가 있으므로 json.stringify()를 굳이 해주지 않아도 오직 res.json만 써도 message를 문자열로 보낼 수 있는거임.
-    //그러나 프론트에서 서버로 요청을 보낼 때는 데이터(body)를 보낼 때 json 문자열 형태로 보내줘야됨. 그래서 register.html안에 body: JSON.stringify({ id: id, pw: pw })처럼 문자열로 변환하는 단계가 있는거임
-    //그리고 프론트에서는 서버에서 받은 응답을 json 객체로 바꿔서 받아야 하므로 const data = await res.json(); 처럼 json 객체로 변환함
-    //따라서 서버, 프론트 둘 다 .json을 쓴다고 같은 역할을 하는게 아니라 서버>프론트에서의 .json은 json.stingfy()가 자동으로 내장되어 있어 문자열로 바뀌고 프론트에서의 .json은 알고 있는 것과 같이 단순히 json 객체로 바꿔주는 역할임
 });
 
-app.post("/login", function (req, res) {
-  const id = req.body.id;
-  const pw = req.body.pw;
+app.post("/login", (req, res) => {
+    const {id, pw} = req.body;
 
-  const user = users.find(function (user) {
-    return user.id === id && user.pw === pw;
-  });
+    conn.query("SELECT * FROM users WHERE id=? AND pw=?", [id, pw], (err, rows) => {
+        if(err) throw err;
 
-  if(!user) {
-    res.json({message: "아이디 또는 비밀번호를 다시 입력해주세요."}); //저장된 회원 정보와 일치하지 않을 때 프론트로 응답 보내기
-    return;
-  }
+        if(rows.length === 0) {
+            return res.json({message: "아이디 또는 비밀번호 오류"});
+        }
 
-  req.session.user = id; //로그인 성공하면 Express가 express-session을 통해 쿠키에 세션 아이디를 저장하고, 그 세션에 user값을 기억해 둬서 이후 다른 페이지에서도 로그인 상태를 유지.
-  res.json({message: "로그인 성공"}); //프론트로 응답 보내기
+        req.session.user = id;
+        res.json({message: "로그인 성공"});
+    });
 });
 
 app.post("/logout", function (req, res) {
@@ -101,7 +98,49 @@ app.delete("/cart", (req, res) => {
   res.json({message: "장바구니 초기화 완료"});
 });
 
-app.use(express.static(path.join(__dirname, "..")));//현재 서버 파일의 상위 폴더(=Shopping_Mall 폴더)를 웹 브라우저에서 자유롭게 접근할 수 있게 열어주는 역할.
+app.use(express.static(__dirname));//현재 서버 파일의 상위 폴더(=Shopping_Mall 폴더)를 웹 브라우저에서 자유롭게 접근할 수 있게 열어주는 역할.
+
+// -------------------- 상품 CRUD --------------------
+
+// 상품 등록 Create
+app.post("/product", (req, res) => {
+  const { name, price, stock } = req.body;
+
+  const sql = "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)";
+  conn.query(sql, [name, price, stock], (err, result) => {
+    if(err) throw err;
+    res.json({ id: result.insertId, name, price, stock });
+  });
+});
+
+// 상품 목록 조회 Read
+app.get("/product", (req, res) => {
+  conn.query("SELECT * FROM products", (err, rows) => {
+    if(err) throw err;
+    res.json(rows);
+  });
+});
+
+// 상품 수정 Update
+app.put("/product/:id", (req, res) => {
+  const { name, price, stock } = req.body;
+
+  const sql = "UPDATE products SET name=?, price=?, stock=? WHERE id=?";
+  conn.query(sql, [name, price, stock, req.params.id], (err) => {
+    if(err) throw err;
+    res.json({ message: "상품 수정 완료" });
+  });
+});
+
+// 상품 삭제 Delete
+app.delete("/product/:id", (req, res) => {
+  conn.query("DELETE FROM products WHERE id=?", [req.params.id], (err) => {
+    if(err) throw err;
+    res.json({ message: "상품 삭제 완료" });
+  });
+});
+
+// ----------------------------------------------------
 
 //3000번 포트로 서버 실행
 app.listen(3000, () => {
