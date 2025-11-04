@@ -1,0 +1,230 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+header h3 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 15px;
+    flex: 1;
+    align-items: center;
+}
+
+.menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.pc-menu ul {
+    display: flex;
+    gap:15px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pc-menu ul:first-child {
+    flex: 1;
+    justify-content: center;
+}
+
+.pc-menu ul:last-child {
+    margin-left: auto;
+}
+
+.pc-menu a {
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    padding: 0 5 px;
+}
+
+.hamburger-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: #fff;
+    width: 250px;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+}
+
+.menu-footer {
+    padding-top: 250px;
+}
+
+.menu-footer p.title {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.menu-footer p.phone {
+    margin-bottom: 20px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    color: #000;
+    font-size: 1.0rem;
+}
+
+.menu-footer p.notice {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    color: #999;
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+.menu-footer p.hours {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    color: #999;
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+.menu-footer p.copyright {
+    margin-bottom: 40px;
+    width: 100%;
+    text-align: left;
+    color: #999;
+    font-size: 0.7rem;
+}
+
+.menu-footer p.followus {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.menu-footer p.instagram {
+    margin-bottom: 70px;
+    width: 100%;
+    text-align: left;
+    color: #999;
+    font-size: 0.7rem;
+}
+
+.hamburger-menu.active {
+    display: block;
+    transform: translateX(0);
+}
+
+.hamburger-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hamburger-menu ul li {
+    margin: 15px 0;
+}
+
+.hamburger-menu ul li a {
+    font-size: 0.8rem;
+    color: #000;
+    text-decoration: none;
+    padding: 6px 0;
+    letter-spacing: 0.5px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px;
+}
+
+h2 {
+    margin-bottom: 3px;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.NEWARRIVAL, .WEEKLYBESTITEM, .BESTSELLER {
+    display: block;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.NEWARRIVAL h2, .WEEKLYBESTITEM h2, .BESTSELLER h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 3px;
+} 
+
+.NEWARRIVAL article, .WEEKLYBESTITEM article, .BESTSELLER article {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+    padding: 10px;
+    gap : 40px;
+    text-align: center;
+    width: 180px;
+}
+
+.NEWARRIVAL article .price, .WEEKLYBESTITEM article .price, .BESTSELLER article .price {
+    font-weight: bold;
+    color: #e67e22;
+} 
+.NEWARRIVAL article button, .WEEKLYBESTITEM article button, .BESTSELLER article button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.NEWARRIVAL + .WEEKLYBESTITEM {
+    border-top: 2px solid #ccc;
+    padding-top: 40px;
+}
+
+.WEEKLYBESTITEM + .BESTSELLER {
+border-top: 2px solid #ccc;
+    padding-top: 40px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}

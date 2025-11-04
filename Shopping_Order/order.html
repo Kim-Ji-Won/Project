@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="order_style_css.css">
+    <link rel="stylesheet" href="order_css.css">
+    <style>
+        
+    </style>
+    <script src="order_data.js">
+    </script>
+</head>
+<body>
+    <header>
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <h3><a href="../Shopping_Main/main.html" style = "text-decoration: none; color: inherit;">Hansung Mall</a></h3>
+        <nav class="pc-menu">
+            <ul>
+                <li><a href="#">All</a></li>
+                <li><a href="#">BEST</a></li>
+                <li><a href="#">OUTER</a></li>
+                <li><a href="#">TOP</a></li>
+                <li><a href="#">BOTTOM</a></li>
+                <li><a href="#">ACC&BAG</a></li>
+                <li><a href="#">COMMUNITY</a></li>
+            </ul>
+            <ul>
+                <li><a href="#"><i class="fa-solid fa-magnifying-glass"></i></a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-info"></i></a></li>
+                <li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            </ul>
+        </nav>
+
+        <nav class="hamburger-menu">
+            <ul>
+                <li><a href="#">All</a></li>
+                <li><a href="#">BEST</a></li>
+                <li><a href="#">OUTER</a></li>
+                <li><a href="#">TOP</a></li>
+                <li><a href="#">BOTTOM</a></li>
+                <li><a href="#">ACC&BAG</a></li>
+                <li><a href="#">COMMUNITY</a></li>
+            </ul>
+
+            <div class="menu-footer">
+                <p class="title">CS CENTER</p>
+                <p class="phone">📞 010-7373-3564</p>
+                <p class="notice">유선상담은 진행하지 않습니다.<br>한성몰 카카오톡 채널을 이용해주세요.</p>
+                <p class="hours">운영 시간 : AM 10:00 ~ PM 06:00<br>점심 시간 : PM 1:00 ~ PM 02:00<br>휴무일 : SAT, SUN, OFF</p>
+                <p class="copyright">Copyright © Hansung Mall All Rights Reserved</p>
+                <p class="followus">FOLLOW US</p>
+                <p class="instagram">@INSTAGRAM</p>
+            </div>
+        </nav> 
+    </header>
+    장바구니
+    <main>
+        <div id="select-box">
+            <div id="user-information">
+                <div id="user-name-btn-group">
+                    <p id="user-name">user</p>
+                    <button type="button" id="changeAddressB">주소 변경</button>
+                </div>
+                <p id="user-address">2호</p>
+                <select name="requirement" id="requirement">
+                    <option value="0" selected>경비실에 맡겨주세요</option>
+                    <option value="1">문 앞에 놔주세요</option>
+                    <option value="2">택배함에 넣어주세요</option>
+                    <option value="3">직접 입력</option>
+                </select>
+                <div id="product-list"></div>
+            </div>
+            <hr>
+                <div id="purchase-choice">
+                    <form>
+                        <p>결제 수단</p>
+                        <input type="radio" name="payment" id="naver" value="Naver Pay" checked> <label for="naver">네이버 페이</label>
+                        <input type="radio" name="payment" id="toss" value="Toss Pay"> <label for="toss">토스 페이</label>
+                        <input type="radio" name="payment" id="card" value="Card"> <label for="card">카드 결제</label>
+                        <input type="radio" name="payment" id="phone" value="Phone"> <label for="phone">휴대폰 결제</label>
+                    </form>
+                </div>
+                <hr>
+                <div id="receipt">
+                    <form>
+                        <input type="radio" name="receipt" value="yes" id="yesR"> <label for="yesR">발급</label>
+                        <input type="radio" name="receipt" value="no" id="noR" checked> <label for="noR">미발급</label>
+                    </form>
+                </div>
+        </div>
+        <div id="purchase-box">
+            <p id="price-text">결제 금액</p>
+            <div id="price-box">
+                <div class="price-row">
+                    <span class="price-label">상품 금액</span>
+                    <span class="price-value" id="subtotal-price">0원</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">할인 금액</span>
+                    <span class="price-value" id="discount-price">0원</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">총 결제 금액</span>
+                    <span class="price-value" id="total-price">0원</span>
+                </div>
+            </div>
+            <input type="button" value="주문하기" id="order-button">
+        </div>
+    </main>
+    <script src="function.js"></script>
+</body>
+</html>
