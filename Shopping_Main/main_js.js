@@ -58,30 +58,24 @@ function renderProducts() {
 
 let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-function addToCart(productId) {
-    const productToAdd = allProducts.find(product => product.id === productId);
+// 장바구니 담기 함수
+async function addToCart(productID) {
+  const productToAdd = allProducts.find(p => p.id === productID);
 
-    if (productToAdd) {
-      // 동일한 상품 이미 있는지 확인
-      const existing = cartItems.find(item => item.id === productId);
+  if(!productToAdd) return;
 
-      if(existing) {
-        existing.quantity = (existing.quantity || 1) + 1;
-        alert(`${productToAdd.name}이 추가되었습니다.`);
-      } else {
-        cartItems.push({...productToAdd, quantity: 1});
-        alert(`${productToAdd.name} 장바구니 담기 성공!`);
-      }
+  await fetch("http://localhost:3000/cart", {
+    method: "POST", 
+    headers: {"Content-Type": "application/json"}, 
+    body: JSON.stringify({
+      id: productToAdd.id, 
+      name: productToAdd.name,
+      price: productToAdd.price,
+      quantity: 1
+    })
+  });
 
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-      console.log(
-        `상품 ID ${productId} (${productToAdd.name}) 장바구니에 담겼습니다.`
-      );
-
-      // 사용자에게 알림
-      alert(`${productToAdd.name} 장바구니 담기 성공!`);
-    }
+  alert(`${productToAdd.name} 장바구니 담기 성공! (서버 저장)`);
 }
 
 // 이미지 누르면 나오는 상세 페이지

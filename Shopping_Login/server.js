@@ -44,7 +44,7 @@ app.post("/register", function (req, res) { // /resgier로 열린 문을 통해 
     users.push({ id: id, pw: pw}); //만들어 놓은 users 배열에 새로운 객체 추가
     res.json({message: "회원가입이 완료되었습니다."}); //프론트로 응답 보내기
     //여기서 헷갈릴 수 있는점!!!!!! 지금 서버>프론트도 .json / 프론트>서버도 .json을 쓰는데 어떻게 문자열이 오갈까? 기본적으로 http 통신은 오직 "문자열"만 오고갈 수 있음.
-    //그래서 서로 오갈 때 무조건 문자열로 변환해서 보내줘야됨. 근데 server에서는 express가 있으므로 json.stringfy()를 굳이 해주지 않아도 오직 res.json만 써도 message를 문자열로 보낼 수 있는거임.
+    //그래서 서로 오갈 때 무조건 문자열로 변환해서 보내줘야됨. 근데 server에서는 express가 있으므로 json.stringify()를 굳이 해주지 않아도 오직 res.json만 써도 message를 문자열로 보낼 수 있는거임.
     //그러나 프론트에서 서버로 요청을 보낼 때는 데이터(body)를 보낼 때 json 문자열 형태로 보내줘야됨. 그래서 register.html안에 body: JSON.stringify({ id: id, pw: pw })처럼 문자열로 변환하는 단계가 있는거임
     //그리고 프론트에서는 서버에서 받은 응답을 json 객체로 바꿔서 받아야 하므로 const data = await res.json(); 처럼 json 객체로 변환함
     //따라서 서버, 프론트 둘 다 .json을 쓴다고 같은 역할을 하는게 아니라 서버>프론트에서의 .json은 json.stingfy()가 자동으로 내장되어 있어 문자열로 바뀌고 프론트에서의 .json은 알고 있는 것과 같이 단순히 json 객체로 바꿔주는 역할임
@@ -84,16 +84,21 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-  const newITem = req.body; // {Id, name, price, quantity}
+  const newItem = req.body; // {id, name, price, quantity}
 
-  const existing = cartDB.find(i => i.id === newITem.id);
+  const existing = cartDB.find(i => i.id === newItem.id);
   if(existing) {
-    existing.quantity += newITem.quantity;
+    existing.quantity += newItem.quantity;
   } else {
     cartDB.push(newItem);
   }
 
   res.json({message: "서버 장바구니 저장 완료"});
+});
+
+app.delete("/cart", (req, res) => {
+  cartDB = [];
+  res.json({message: "장바구니 초기화 완료"});
 });
 
 app.use(express.static(path.join(__dirname, "..")));//현재 서버 파일의 상위 폴더(=Shopping_Mall 폴더)를 웹 브라우저에서 자유롭게 접근할 수 있게 열어주는 역할.
