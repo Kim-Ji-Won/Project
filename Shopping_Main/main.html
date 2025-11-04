@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hansung Mall</title>
+    <link rel="stylesheet" href="main_css.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <h3>Hansung Mall</h3>
+        
+        <nav class="pc-menu">
+            <ul>
+                <li><a href="#">All</a></li>
+                <li><a href="#">BEST</a></li>
+                <li><a href="#">OUTER</a></li>
+                <li><a href="#">TOP</a></li>
+                <li><a href="#">BOTTOM</a></li>
+                <li><a href="#">ACC&BAG</a></li>
+                <li><a href="#">COMMUNITY</a></li>
+                <li><a href="../Shopping_Login/Fronted/register.html">회원가입</a></li>
+                <li><a href="../Shopping_Order/order.html">order</a></li>
+            </ul>
+            <ul>
+                <li><a href="#"><i class="fa-solid fa-magnifying-glass"></i></a></li>
+                <li><a href="../Shopping_Login/Fronted/login.html"><i class="fa-solid fa-circle-info"></i></a></li>
+                <li><a href="../Shopping_Cart/cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+            </ul>
+        </nav>
+
+        <nav class="hamburger-menu">
+            <ul>
+                <li><a href="#">All</a></li>
+                <li><a href="#">BEST</a></li>
+                <li><a href="#">OUTER</a></li>
+                <li><a href="#">TOP</a></li>
+                <li><a href="#">BOTTOM</a></li>
+                <li><a href="#">ACC&BAG</a></li>
+                <li><a href="#">COMMUNITY</a></li>
+            </ul>
+
+            <div class="menu-footer">
+                <p class="title">CS CENTER</p>
+                <p class="phone">📞 010-7373-3564</p>
+                <p class="notice">유선상담은 진행하지 않습니다.<br>한성몰 카카오톡 채널을 이용해주세요.</p>
+                <p class="hours">운영 시간 : AM 10:00 ~ PM 06:00<br>점심 시간 : PM 1:00 ~ PM 02:00<br>휴무일 : SAT, SUN, OFF</p>
+                <p class="copyright">Copyright © Hansung Mall All Rights Reserved</p>
+                <p class="followus">FOLLOW US</p>
+                <p class="instagram">@INSTAGRAM</p>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <!--섹션 부분은 js에서 코드로 삽입-->
+         <section class="NEWARRIVAL" id="new-arrivals-container">
+            <h2>NEW ARRIVALS</h2>
+            <p class="subtitle">새롭게 업데이트 된 신제품을 만나보세요.</p>
+         </section>
+
+        <section class="WEEKLYBESTITEM" id="weekly-best-container">
+            <h2>WEEKLY BEST ITEM</h2>
+            <p class="subtitle">이번주 가장 사랑받은 제품을 만나보세요.</p>
+         </section>
+
+         <section class="BESTSELLER" id="best-seller-container">
+            <h2>BEST SELLER</h2>
+            <p class="subtitle">가장 있기있는 베스트 제품을 만나보세요.</p>
+         </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Shop</p>
+    </footer>
+
+    <script src="main_js.js"></script>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.hamburger-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');    
+        });
+        document.addEventListener("DOMContentLoaded", renderProducts);
+    </script>
+</body>
+</html>
