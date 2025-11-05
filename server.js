@@ -1,9 +1,12 @@
+const bcrypt = require("bcrypt");
+const SALT_ROUNDS = 10;
+
 const mysql = require("mysql2");
 
 const conn = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "1234",   // 방금 네가 설정한 새 비번
+  password: "1234",   // 방금 설정한 새 비번
   database: "shoppingmall"
 });
 
@@ -16,11 +19,14 @@ const express = require("express");
 const session = require("express-session"); //세션을 관리하는 도구(로그인 상태를 쿠키에 저장하고 추적)
 const bodyParser = require("body-parser"); //프론트에서 보낸 데이터를 읽는 도구
 const path = require("path"); //파일 경로나 폴더 경로를 OS에 맞게 안전하게 연결해주는 도구.
+
 //1. 서버 만들기
 const app = express(); //웹 서버 실행 필수 단계
+
 //2. JSON 데이터 읽을 수 있도록 설정
 //미들웨어 설정(서버에서 요청이 들어올 떄마다 실행할 함수를 등록하는 명령어: app.use() 무조건 이것부터 거침)
 app.use(bodyParser.json()); //프론트가 보낸 JSON 데이터를 읽어서 JS 객체로 변환 > req.body안에 담아줌
+
 //3. 세션 설정하기(로그인 상태를 유지하기 위해)(app,use() 안에 넣은 이유 > 웹 전체에서 seesion() 설정을 적용하기 위해)
 app.use(
     session({
@@ -30,21 +36,30 @@ app.use(
     })
 );
 
-
 //4. 회원가입 기능
-app.post("/register", (req, res) => {
-    const {id, pw} = req.body;
+//POST /register 엔드포인트 등록
+//app은 express 인스턴스이고, req(요청), res(응답) 객체를 받는다
+//이 경로로 프론트에서 POST 방식으로 보냄
+app.post("/register", (req, res) => { 
+    const {id, pw} = req.body; //사용자가 작성한 아이디/비번 꺼내오는 것
 
+    //?는 값이 들어가는 칸임(이 방식을 쓰는 이뉴는 SQL Injection 방지하기 위해)
     conn.query("SELECT * FROM users WHERE id=?", [id], (err, rows) => {
-        if(err) throw err;
+        if(err) throw err; //err은 에러 정보가 담겨있는 상자다(에러 없으면 err=null) 즉, 에러가 생겼으먼 알려주고 여기서 더 진행하지 마라
 
-        if(rows.length > 0) {
+        //rows.length > 0 이라는건 "똑같은 id가 이미 있다"
+        if(rows.length > 0) { 
             return res.json({message: "이미 존재하는 아이디입니다."});
         }
 
-        conn.query("INSERT INTO users (id, pw) VALUES (?, ?)", [id, pw], (err2) => {
+        // pw를 해시로 변경
+        bcrypt.hash(pw, SALT_ROUNDS, (hashErr, hash) => {
+          if(hashErr) throw hashErr;
+
+          conn.query("INSERT INTO users (id, pw) VALUES (?, ?)", [id, hash], (err2) => {
             if(err2) throw err2;
-            res.json({message: "회원가입이 완료되었습니다."});
+            res.json({message: "회원가입이 완료되었습니다."}); //DB에 저장 끝냈으니까 프론트로 메시지 보냄
+          });
         });
     });
 });
@@ -59,8 +74,41 @@ app.post("/login", (req, res) => {
             return res.json({message: "아이디 또는 비밀번호 오류"});
         }
 
-        req.session.user = id;
-        res.json({message: "로그인 성공"});
+        const user = rows[0];
+
+        //현재 user.pw가 이미 해시인지 확인
+        const stored = user.pw;
+
+        //bcrypt 해시는 $2b$로 시작한다
+        const isHashed = stored.startsWith("$2b$");
+
+        //평문 비번 비교 or 해시 비교
+        if(!isHashed) {
+          if(stored != pw) {
+            return res.json({message: "아이디 또는 비밀번호 오류"});
+          }
+
+          bcrypt.hash(pw, SALT_ROUNDS, (hErr, newHash) => {
+            if(hErr) throw hErr;
+
+            conn.query("UPDATE users SET pw=? WHERE id=?", [newHash, id]);
+          });
+
+          req.session.user = id; //세션 메모장에 user라는 칸을 하나 만들고 거기에 id를 적어놓는다
+          res.json({message: "로그인 성공"});
+         }
+         else {
+          bcrypt.compare(pw, stored, (cmpErr, isMatch) => {
+            if(cmpErr) throw cmpErr;
+
+            if(!isMatch) {
+              return res.json({message: "아이디 또는 비밀번호 오류"});
+            }
+
+            req.session.user = id;
+            return res.json({message: "로그인 성공"});
+          });
+         }
     });
 });
 
