@@ -67,7 +67,9 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     const {id, pw} = req.body;
 
-    conn.query("SELECT * FROM users WHERE id=? AND pw=?", [id, pw], (err, rows) => {
+    console.log("id:", id, "pw: ", pw);
+
+    conn.query("SELECT * FROM users WHERE id=?", [id], (err, rows) => {
         if(err) throw err;
 
         if(rows.length === 0) {
@@ -91,13 +93,15 @@ app.post("/login", (req, res) => {
           bcrypt.hash(pw, SALT_ROUNDS, (hErr, newHash) => {
             if(hErr) throw hErr;
 
-            conn.query("UPDATE users SET pw=? WHERE id=?", [newHash, id]);
+            conn.query("UPDATE users SET pw=? WHERE id=?", [newHash, id], (uErr) => {
+              if(uErr) throw uErr;
+            });
           });
 
           req.session.user = id; //세션 메모장에 user라는 칸을 하나 만들고 거기에 id를 적어놓는다
-          res.json({message: "로그인 성공"});
+          return res.json({message: "로그인 성공"});
          }
-         else {
+
           bcrypt.compare(pw, stored, (cmpErr, isMatch) => {
             if(cmpErr) throw cmpErr;
 
@@ -108,7 +112,6 @@ app.post("/login", (req, res) => {
             req.session.user = id;
             return res.json({message: "로그인 성공"});
           });
-         }
     });
 });
 
