@@ -56,7 +56,27 @@
                 <p class="instagram">@INSTAGRAM</p>
             </div>
         </nav>
+        <div class="search-area">
+            <form id="product-search-form">
+                <label class="sr-only" for="product-search-input">상품 검색</label>
+                <input type="search" id="product-search-input" name="keyword" placeholder="찾고 싶은 상품을 입력하세요" autocomplete="off">
+                <button type="submit" aria-label="검색">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button type="button" id="search-reset-btn" class="search-reset-btn" aria-label="검색 초기화">
+                    초기화
+                </button>
+            </form>
+        </div>
     </header>
+    
+    <section id="search-results" class="search-results hidden">
+        <div class="search-results-heading">
+            <h2>검색 결과</h2>
+            <p id="search-results-meta" class="search-results-meta">상품명을 입력하면 결과가 여기에 표시됩니다.</p>
+        </div>
+        <div id="search-results-list" class="search-results-list"></div>
+    </section>
     
     <main>
         <!--섹션 부분은 js에서 코드로 삽입-->
