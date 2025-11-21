@@ -43,7 +43,7 @@ function renderCart() {
 clearCartBtn.addEventListener('click', async function() {
     await fetch("http://localhost:3000/cart", {method: "DELETE"});
     cart = [];
-    renderCartp();
+    renderCart();
 });
 
 loadCartFromServer();

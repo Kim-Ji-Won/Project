@@ -1,0 +1,141 @@
+body {
+    background-color: #f4f4f4;
+}
+
+.cart-page {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.cart-container {
+    width: 100%;
+    max-width: 960px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.cart-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cart-title h1 {
+    margin-bottom: 6px;
+}
+
+.cart-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+#cart {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+#cart thead {
+    background-color: #333;
+    color: #fff;
+}
+
+#cart th,
+#cart td {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #eee;
+}
+
+#cart tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+#cart tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.cart-summary {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.cart-summary #total-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cart-link-btn,
+.cart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    text-decoration: none;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-link-btn:hover,
+.cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cart-link-btn.secondary {
+    background-color: #555;
+    color: #fff;
+}
+
+.cart-link-btn.primary {
+    background-color: #e67e22;
+    color: #fff;
+}
+
+.cart-btn.danger {
+    background-color: #c0392b;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .cart-page {
+        padding: 20px;
+    }
+
+    .cart-container {
+        padding: 20px;
+    }
+
+    .cart-summary {
+        align-items: stretch;
+    }
+
+    .cart-actions {
+        justify-content: stretch;
+    }
+
+    .cart-actions a,
+    .cart-actions button {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+}
+
