@@ -2,58 +2,141 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로그인</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
-      text-align: center;
-      padding-top: 80px;
-    }
-    input {
-      padding: 8px;
-      margin: 5px;
-      width: 200px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #3498db;
-      border: none;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 | Hansung Mall</title>
+  <link rel="stylesheet" href="../../Shopping_Main/main_css.css">
+  <link rel="stylesheet" href="login.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <h2>로그인 페이지</h2>
-  <input type="text" id="id" placeholder="아이디"><br>
-  <input type="password" id="pw" placeholder="비밀번호"><br>
-  <button onclick="login()">로그인</button>
+  <header>
+    <div class="menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <h3>Hansung Mall</h3>
+    
+    <nav class="pc-menu">
+        <ul>
+            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="#">BEST</a></li>
+            <li><a href="#">OUTER</a></li>
+            <li><a href="#">TOP</a></li>
+            <li><a href="#">BOTTOM</a></li>
+            <li><a href="#">ACC&BAG</a></li>
+            <li><a href="#">COMMUNITY</a></li>
+            <li><a href="register.html">회원가입</a></li>
+            <li><a href="../../Shopping_Order/order.html">order</a></li>
+        </ul>
+        <ul>
+            <li><a href="#" class="active"><i class="fa-solid fa-circle-info"></i></a></li>
+            <li><a href="../../Shopping_Cart/cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+    </nav>
+
+    <nav class="hamburger-menu">
+        <ul>
+            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="#">BEST</a></li>
+            <li><a href="#">OUTER</a></li>
+            <li><a href="#">TOP</a></li>
+            <li><a href="#">BOTTOM</a></li>
+            <li><a href="#">ACC&BAG</a></li>
+            <li><a href="#">COMMUNITY</a></li>
+        </ul>
+
+        <div class="menu-footer">
+            <p class="title">CS CENTER</p>
+            <p class="phone">📞 010-7373-3564</p>
+            <p class="notice">유선상담은 진행하지 않습니다.<br>한성몰 카카오톡 채널을 이용해주세요.</p>
+            <p class="hours">운영 시간 : AM 10:00 ~ PM 06:00<br>점심 시간 : PM 1:00 ~ PM 02:00<br>휴무일 : SAT, SUN, OFF</p>
+            <p class="copyright">Copyright © Hansung Mall All Rights Reserved</p>
+            <p class="followus">FOLLOW US</p>
+            <p class="instagram">@INSTAGRAM</p>
+        </div>
+    </nav>
+  </header>
+
+  <main class="login-page">
+    <section class="login-card">
+      <div class="login-header">
+        <h1>로그인</h1>
+        <p class="subtitle">한성몰의 다양한 혜택을 만나보세요.</p>
+      </div>
+      <form id="login-form">
+        <label class="sr-only" for="id">아이디</label>
+        <input type="text" id="id" name="id" placeholder="아이디" autocomplete="username" required>
+
+        <label class="sr-only" for="pw">비밀번호</label>
+        <input type="password" id="pw" name="pw" placeholder="비밀번호" autocomplete="current-password" required>
+
+        <button type="submit" class="login-btn">로그인</button>
+      </form>
+
+      <div class="login-links">
+        <a href="register.html">회원가입</a>
+        <span>|</span>
+        <a href="#">아이디/비밀번호 찾기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+      <p>&copy; 2025 Hansung Mall</p>
+  </footer>
 
   <script>
-    async function login() { //async 함수는 비동기 함수. 안에서 await 사용 가능하게 함. fetch 실행 하고 응답 올 때까지 기다린 다음 다음 줄 실행
-      const id = document.getElementById("id").value;
-      const pw = document.getElementById("pw").value;
-
-      // 서버(server.js)로 로그인 요청 보내기(await 있기 때문에 서버에서 응답 올 때까지 기다림!)
+    async function login(id, pw) {
       const response = await fetch("/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, //json 문자열로 서버에 보낸다고 알려주는 의미
-        body: JSON.stringify({ id, pw }) //내가 서버로 실제 보낼 데이터(body 부분). json 객체를 문자열로 바꿔서 전송
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, pw })
       });
 
-      const data = await response.json(); //서버에서 받은 응답을 Json 객체로 파싱해서 data 변수에 저장
-      alert(data.message); //서버가 보낸 message를 alert로 표시
+      const data = await response.json();
+      alert(data.message);
 
-      // 로그인 성공 시 메인페이지(home.html)로 이동
       if (data.message.includes("성공")) {
         window.location.href = "/Shopping_Main/main.html";
       }
     }
+
+    function attachLoginEvents() {
+      const form = document.getElementById("login-form");
+      if (form) {
+        form.addEventListener("submit", async event => {
+          event.preventDefault();
+          const idInput = document.getElementById("id");
+          const pwInput = document.getElementById("pw");
+          await login(idInput.value.trim(), pwInput.value);
+        });
+      }
+
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navMenu = document.querySelector('.hamburger-menu');
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');    
+        });
+      }
+    }
+
+    async function logout() {
+      try {
+        const response = await fetch("http://localhost:3000/logout", { method: "POST" });
+        const data = await response.json();
+        alert(data.message);
+
+        if (data.message.includes("성공")) {
+          window.location.href = "../../Shopping_Login/Fronted/login.html";
+        }
+      } catch (err) {
+        console.error("로그아웃 실패:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", attachLoginEvents);
   </script>
 </body>
 </html>

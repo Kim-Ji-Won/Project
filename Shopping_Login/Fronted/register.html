@@ -2,41 +2,145 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>회원가입</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 | Hansung Mall</title>
+  <link rel="stylesheet" href="../../Shopping_Main/main_css.css">
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="register.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <h2>회원가입 페이지</h2>
+  <header>
+    <div class="menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </div>
 
-  <form id="registerForm">
-    <label>아이디: <input type="text" id="id" required></label><br>
-    <label>비밀번호: <input type="password" id="pw" required></label><br>
-    <button type="submit">회원가입</button>
-  </form>
+    <h3>Hansung Mall</h3>
+    
+    <nav class="pc-menu">
+        <ul>
+            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="#">BEST</a></li>
+            <li><a href="#">OUTER</a></li>
+            <li><a href="#">TOP</a></li>
+            <li><a href="#">BOTTOM</a></li>
+            <li><a href="#">ACC&BAG</a></li>
+            <li><a href="#">COMMUNITY</a></li>
+            <li><a href="register.html" class="active">회원가입</a></li>
+            <li><a href="../../Shopping_Order/order.html">order</a></li>
+        </ul>
+        <ul>
+            <li><a href="../Fronted/login.html"><i class="fa-solid fa-circle-info"></i></a></li>
+            <li><a href="../../Shopping_Cart/cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+    </nav>
 
-  <p id="result"></p>
+    <nav class="hamburger-menu">
+        <ul>
+            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="#">BEST</a></li>
+            <li><a href="#">OUTER</a></li>
+            <li><a href="#">TOP</a></li>
+            <li><a href="#">BOTTOM</a></li>
+            <li><a href="#">ACC&BAG</a></li>
+            <li><a href="#">COMMUNITY</a></li>
+        </ul>
+
+        <div class="menu-footer">
+            <p class="title">CS CENTER</p>
+            <p class="phone">📞 010-7373-3564</p>
+            <p class="notice">유선상담은 진행하지 않습니다.<br>한성몰 카카오톡 채널을 이용해주세요.</p>
+            <p class="hours">운영 시간 : AM 10:00 ~ PM 06:00<br>점심 시간 : PM 1:00 ~ PM 02:00<br>휴무일 : SAT, SUN, OFF</p>
+            <p class="copyright">Copyright © Hansung Mall All Rights Reserved</p>
+            <p class="followus">FOLLOW US</p>
+            <p class="instagram">@INSTAGRAM</p>
+        </div>
+    </nav>
+  </header>
+
+  <main class="register-page">
+    <section class="register-card">
+      <div class="register-header">
+        <h1>회원가입</h1>
+        <p class="subtitle">간편 회원가입으로 맞춤 혜택을 받으세요.</p>
+      </div>
+
+      <form id="registerForm" class="register-form">
+        <label class="form-field">
+          <span>아이디</span>
+          <input type="text" id="id" name="id" placeholder="아이디를 입력하세요" autocomplete="username" required>
+        </label>
+
+        <label class="form-field">
+          <span>비밀번호</span>
+          <input type="password" id="pw" name="pw" placeholder="비밀번호를 입력하세요" autocomplete="new-password" required>
+        </label>
+
+        <button type="submit" class="register-btn">회원가입</button>
+      </form>
+
+      <p id="result" class="register-result"></p>
+
+      <div class="register-links">
+        <span>이미 계정이 있으신가요?</span>
+        <a href="login.html">로그인 하러 가기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Hansung Mall</p>
+  </footer>
 
   <script>
     document.getElementById("registerForm").addEventListener("submit", async function(e) {
-      e.preventDefault(); // 폼 새로고침 방지
+      e.preventDefault();
 
-      const id = document.getElementById("id").value;
+      const id = document.getElementById("id").value.trim();
       const pw = document.getElementById("pw").value;
 
-      // /register 경로를 통해 서버(server.js)로 회원가입 요청(post) 보내기
+      if (!id || !pw) {
+        document.getElementById("result").textContent = "아이디와 비밀번호를 모두 입력해주세요.";
+        return;
+      }
+
       const res = await fetch("/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, //내가 보낼 데이터를 json 형식으로 보낸다고 알려주는 의미
-        body: JSON.stringify({ id: id, pw: pw }) //내가 보낼 데이터를 json 문자열로 바꿔 보냄
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, pw })
       });
 
-      const data = await res.json(); //서버에서 받은 응답을 data 변수에 Json객체로 변환해서 저장(그래야 .message처럼 객체 접근 가능)
-      document.getElementById("result").textContent = data.message; //Id=result 부분에 서버에서 받은 mssage 표시
+      const data = await res.json();
+      document.getElementById("result").textContent = data.message || "";
 
-      if (data.message.includes("완료")) { //서버에서 받은 message에 "완료"라는 단어가 포함되어 있으면 아래 코드 실행
+      if (data.message && data.message.includes("완료")) {
         alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
         window.location.href = "/Shopping_Login/Fronted/login.html";
       }
-    });    
+    });
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.hamburger-menu');
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');    
+      });
+    }
+
+    async function logout() {
+      try {
+        const response = await fetch("http://localhost:3000/logout", { method: "POST" });
+        const data = await response.json();
+        alert(data.message);
+
+        if (data.message.includes("성공")) {
+          window.location.href = "../../Shopping_Login/Fronted/login.html";
+        }
+      } catch (err) {
+        console.error("로그아웃 실패:", err);
+      }
+    }
   </script>
 </body>
 </html>
