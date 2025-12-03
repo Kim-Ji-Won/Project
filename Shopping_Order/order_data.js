@@ -1,14 +1,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
     //1) 서버에서 장바구니 받아오기
-    const res = await fetch("http://localhost:3000/cart");
+    const res = await fetch("http://localhost:3456/cart");
     const cart = await res.json(); //cartDB 데이터
 
     //사용자 정보 표시(일단 Localsotrage)
     const user = JSON.parse(localStorage.getItem("user"));
 
-    document.getElementById("user-name").textContent = user.name;
-    document.getElementById("user-address").textContent = user.address;
+    if (!user) {
+        document.getElementById("user-name").textContent = "로그인 필요";
+        document.getElementById("user-address").textContent = "";
+    } else {
+        document.getElementById("user-name").textContent = user.name;
+        document.getElementById("user-address").textContent = user.address;
+    }
+
 
     //장바구니 목록 표시
     const productList = document.getElementById("product-list");

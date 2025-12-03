@@ -36,6 +36,25 @@ app.use(
     })
 );
 
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "Shopping_Main/main.html"));
+});
+
+// 메인 페이지 파일들
+app.use("/", express.static(path.join(__dirname, "Shopping_Main")));
+
+// 로그인/회원가입 페이지
+app.use("/login", express.static(path.join(__dirname, "Shopping_Login/Fronted")));
+app.use("/register", express.static(path.join(__dirname, "Shopping_Login/Fronted")));
+
+// 장바구니 페이지
+app.use("/cart", express.static(path.join(__dirname, "Shopping_Cart")));
+
+// 주문 페이지
+app.use("/order", express.static(path.join(__dirname, "Shopping_Order")));
+
+
 //4. 회원가입 기능
 //POST /register 엔드포인트 등록
 //app은 express 인스턴스이고, req(요청), res(응답) 객체를 받는다
@@ -149,8 +168,6 @@ app.delete("/cart", (req, res) => {
   res.json({message: "장바구니 초기화 완료"});
 });
 
-app.use(express.static(__dirname));//현재 서버 파일의 상위 폴더(=Shopping_Mall 폴더)를 웹 브라우저에서 자유롭게 접근할 수 있게 열어주는 역할.
-
 // -------------------- 상품 CRUD --------------------
 
 // 상품 등록 Create
@@ -193,7 +210,7 @@ app.delete("/product/:id", (req, res) => {
 
 // ----------------------------------------------------
 
-//3000번 포트로 서버 실행
-app.listen(3000, () => {
-  console.log("✅ 서버 실행 중: http://localhost:3000");
+//5000번 포트로 서버 실행
+app.listen(3456, "0.0.0.0", () => {
+  console.log("✅ 서버 실행 중: http://localhost:3456");
 });

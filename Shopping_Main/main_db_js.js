@@ -9,7 +9,7 @@ const SEARCH_META_DEFAULT_MESSAGE = "상품명을 입력하면 결과가 여기�
 // 서버에서 상품 전체 불러오기
 async function loadProducts() {
   try {
-    const res = await fetch("http://localhost:3000/product");
+    const res = await fetch("http://localhost:3456/product");
     allProducts = await res.json(); // DB에서 가져온 상품 배열
 
     renderProducts(); // 화면에 표시
@@ -215,7 +215,7 @@ async function addToCart(productID) {
   if (!productToAdd) return;
 
   try {
-    await fetch("http://localhost:3000/cart", {
+    await fetch("http://localhost:3456/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -223,6 +223,7 @@ async function addToCart(productID) {
         name: productToAdd.name,
         price: productToAdd.price,
         quantity: 1,
+        imgUrl: productToAdd.imgUrl,
       }),
     });
 
@@ -244,7 +245,7 @@ async function loadProductDetail() {
 
   // DB에서 상품 데이터 불러오기
   try {
-    const res = await fetch("http://localhost:3000/product");
+    const res = await fetch("http://localhost:3456/product");
     const products = await res.json();
     const product = products.find(p => p.id === productId);
     if (!product) return;
@@ -277,7 +278,7 @@ async function loadProductDetail() {
 // ------------------------------
 async function logout() {
   try {
-    const response = await fetch("http://localhost:3000/logout", { method: "POST" });
+    const response = await fetch("http://localhost:3456/logout", { method: "POST" });
     const data = await response.json();
     alert(data.message);
 

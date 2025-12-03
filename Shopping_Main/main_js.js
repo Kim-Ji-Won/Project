@@ -16,7 +16,7 @@ const bestSeller = [
   { id: 301, name: "베스트셀러 자켓", price: 90000, alt: "outer", imgUrl: "./images/best_jacket.jpg" },
   { id: 302, name: "베스트셀러 셔츠", price: 30000, alt: "top", imgUrl: "./images/best_shirt.jpg" },
   { id: 303, name: "베스트셀러 바지", price: 40000, alt: "bottom", imgUrl: "./images/best_pants.jpg" },
-  { id: 304, name: "베스트셀러 가방", price: 70000, alt: "bag", imgUrl: "./images/best_bag.jpg" }, 
+  { id: 304, name: "베스트셀러 가방", price: 34560, alt: "bag", imgUrl: "./images/best_bag.jpg" }, 
 ];
 
 const allProducts = [...newArrivals, ...weeklyBest, ...bestSeller];
@@ -64,7 +64,7 @@ async function addToCart(productID) {
 
   if(!productToAdd) return;
 
-  await fetch("http://localhost:3000/cart", {
+  await fetch("http://localhost:3456/cart", {
     method: "POST", 
     headers: {"Content-Type": "application/json"}, 
     body: JSON.stringify({
@@ -118,7 +118,7 @@ function loadProductDetail() {
 
 // 로그아웃 함수(내가 로그아웃 아이콘 누르면 /logout 경로로 POST 요청 보내서 저장된 세션 삭제)
 async function logout() {
-  const response = await fetch("http://localhost:3000/logout", {
+  const response = await fetch("http://localhost:3456/logout", {
     method: "POST",
   });
 

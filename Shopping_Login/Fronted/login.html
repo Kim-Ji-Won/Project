@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인 | Hansung Mall</title>
-  <link rel="stylesheet" href="../../Shopping_Main/main_css.css">
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="/main_css.css">
+  <link rel="stylesheet" href="/login/login.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -18,26 +18,26 @@
     
     <nav class="pc-menu">
         <ul>
-            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="/main.html">All</a></li>
             <li><a href="#">BEST</a></li>
             <li><a href="#">OUTER</a></li>
             <li><a href="#">TOP</a></li>
             <li><a href="#">BOTTOM</a></li>
             <li><a href="#">ACC&BAG</a></li>
             <li><a href="#">COMMUNITY</a></li>
-            <li><a href="register.html">회원가입</a></li>
-            <li><a href="../../Shopping_Order/order.html">order</a></li>
+            <li><a href="/register/register.html">회원가입</a></li>
+            <li><a href="/order/order.html">order</a></li>
         </ul>
         <ul>
             <li><a href="#" class="active"><i class="fa-solid fa-circle-info"></i></a></li>
-            <li><a href="../../Shopping_Cart/cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <li><a href="/cart/cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
             <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></a></li>
         </ul>
     </nav>
 
     <nav class="hamburger-menu">
         <ul>
-            <li><a href="../../Shopping_Main/main.html">All</a></li>
+            <li><a href="/main.html">All</a></li>
             <li><a href="#">BEST</a></li>
             <li><a href="#">OUTER</a></li>
             <li><a href="#">TOP</a></li>
@@ -75,7 +75,7 @@
       </form>
 
       <div class="login-links">
-        <a href="register.html">회원가입</a>
+        <a href="/register/register.html">회원가입</a>
         <span>|</span>
         <a href="#">아이디/비밀번호 찾기</a>
       </div>
@@ -98,7 +98,7 @@
       alert(data.message);
 
       if (data.message.includes("성공")) {
-        window.location.href = "/Shopping_Main/main.html";
+        window.location.href = "/main.html";
       }
     }
 
@@ -124,12 +124,16 @@
 
     async function logout() {
       try {
-        const response = await fetch("http://localhost:3000/logout", { method: "POST" });
+        const response = await fetch("http://localhost:3456/logout", { method: "POST" });
         const data = await response.json();
         alert(data.message);
 
         if (data.message.includes("성공")) {
-          window.location.href = "../../Shopping_Login/Fronted/login.html";
+          localStorage.setItem("user", JSON.stringify({
+            name: data.name,
+            address: data.address
+          }));
+          window.location.href = "/login/login.html";
         }
       } catch (err) {
         console.error("로그아웃 실패:", err);

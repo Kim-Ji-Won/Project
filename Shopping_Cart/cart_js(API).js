@@ -5,7 +5,7 @@ const clearCartBtn = document.getElementById('clear-cart');
 let cart = [];
 
 async function loadCartFromServer() {
-    const res = await fetch("http://localhost:3000/cart");
+    const res = await fetch("http://localhost:3456/cart");
     cart = await res.json();
     renderCart();
 }
@@ -41,7 +41,7 @@ function renderCart() {
 }
 
 clearCartBtn.addEventListener('click', async function() {
-    await fetch("http://localhost:3000/cart", {method: "DELETE"});
+    await fetch("http://localhost:3456/cart", {method: "DELETE"});
     cart = [];
     renderCart();
 });
